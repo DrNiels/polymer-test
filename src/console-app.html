@@ -7,15 +7,6 @@
       <template>
         <template is="dom-repeat" items="[[_displayedItems]]">
           <span>[[item]]</span>
-          <span>[[item]]</span>
-          <span>[[item]]</span>
-          <span>[[item]]</span>
-          <span>[[item]]</span>
-          <span>[[item]]</span>
-          <span>[[item]]</span>
-          <span>[[item]]</span>
-          <span>[[item]]</span>
-          <span>[[item]]</span>
         </template>
         <paper-button on-tap="_moreItems">More!</paper-button>
       </template>
@@ -41,41 +32,17 @@
                   }
               }
 
-              nextTick(fn) {
-                  this._timeouts.push(fn);
-                  window.postMessage('messageName', "*");
-              }
-
               _moreItems() {
                   let i = 0;
                   let addMoreItems = () => {
                       let addItems = [];
-                      for (let j = 0; j < 500; j++) {
+                      for (let j = 0; j < 50; j++) {
                           addItems.push(j);
                       }
                       this.splice('_displayedItems', 1, ...addItems);
                       i++;
-                      if (i < 100) {
-                          this.nextTick(addMoreItems);
-                      }
                   }
-                  this.nextTick(addMoreItems);
-              }
-
-              connectedCallback() {
-                  super.connectedCallback();
-
-                  let handleMessage = (event) => {
-                      if (event.source == window && event.data == 'messageName') {
-                          event.stopPropagation();
-                          if (this._timeouts.length > 0) {
-                              var fn = this._timeouts.shift();
-                              fn();
-                          }
-                      }
-                  };
-
-                  window.addEventListener("message", handleMessage, true);
+                  addMoreItems();
               }
           }
 
