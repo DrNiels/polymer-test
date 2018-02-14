@@ -1,0 +1,7 @@
+{
+  "name": "console-app",
+  "short_name": "console-app",
+  "description": "IP-Symcon Management Console",
+  "start_url": "/",
+  "display": "standalone"
+}

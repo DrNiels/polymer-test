@@ -1,0 +1,84 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
+    <dom-module id="console-app">
+      <template>
+        <template is="dom-repeat" items="[[_displayedItems]]">
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+          <span>[[item]]</span>
+        </template>
+        <paper-button on-tap="_moreItems">More!</paper-button>
+      </template>
+
+      <script>
+          class ConsoleApp extends Polymer.Element {
+
+              static get is() {
+                  return 'console-app';
+              }
+
+              static get properties() {
+                  return {
+                      _displayedItems: {
+                          type: Array,
+                          value: ['1', '2', '3']
+                      },
+
+                      _timeouts: {
+                          type: Array,
+                          value: []
+                      }
+                  }
+              }
+
+              nextTick(fn) {
+                  this._timeouts.push(fn);
+                  window.postMessage('messageName', "*");
+              }
+
+              _moreItems() {
+                  let i = 0;
+                  let addMoreItems = () => {
+                      let addItems = [];
+                      for (let j = 0; j < 500; j++) {
+                          addItems.push(j);
+                      }
+                      this.splice('_displayedItems', 1, ...addItems);
+                      i++;
+                      if (i < 100) {
+                          this.nextTick(addMoreItems);
+                      }
+                  }
+                  this.nextTick(addMoreItems);
+              }
+
+              connectedCallback() {
+                  super.connectedCallback();
+
+                  let handleMessage = (event) => {
+                      if (event.source == window && event.data == 'messageName') {
+                          event.stopPropagation();
+                          if (this._timeouts.length > 0) {
+                              var fn = this._timeouts.shift();
+                              fn();
+                          }
+                      }
+                  };
+
+                  window.addEventListener("message", handleMessage, true);
+              }
+          }
+
+          customElements.define(ConsoleApp.is, ConsoleApp);
+      </script>
+    </dom-module>

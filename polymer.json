@@ -1,0 +1,28 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/console-app.html",
+  "sources": [
+    "src/**/*"
+  ],
+
+  "extraDependencies": [
+    "lib/IPSProxy/dist/IPSProxyFactory.js",
+    "lib/monaco/**/*",
+    "legacy/**/*",
+    "fonts/**/*",
+    "images/**/*",
+    "bower_components/webcomponentsjs/webcomponents-lite.js",
+    "bower_components/font-roboto/fonts/roboto/*"
+  ],
+
+  "lint": {
+    "rules": ["polymer-2-hybrid"]
+  },
+
+  "builds": [{
+    "bundle": true,
+    "js": {"minify": true},
+    "css": {"minify": true},
+    "html": {"minify": true}
+  }]
+}
